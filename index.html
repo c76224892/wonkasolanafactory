@@ -8,8 +8,6 @@
     /* General Styles */
     body {
       font-family: 'Georgia', serif;
-      background-color: #301934;
-      color: #FFD700;
       margin: 0;
       padding: 0;
       text-align: center;
@@ -18,13 +16,28 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      background-color: #301934;
+      color: #FFD700;
       background-image: radial-gradient(circle, #502b50, #301934);
+      overflow-x: hidden;
     }
 
     h1 {
       font-size: 3em;
       margin-bottom: 20px;
       text-shadow: 2px 2px 5px #000000;
+      animation: glowTitle 2s infinite alternate;
+    }
+
+    @keyframes glowTitle {
+      0% {
+        text-shadow: 2px 2px 5px #000;
+        transform: scale(1);
+      }
+      100% {
+        text-shadow: 2px 2px 15px #FFD700;
+        transform: scale(1.05);
+      }
     }
 
     p {
@@ -34,18 +47,38 @@
       margin-bottom: 30px;
     }
 
+    /* Background Animation */
+    @keyframes bgAnimation {
+      0% {
+        background: radial-gradient(circle, #502b50, #301934);
+      }
+      50% {
+        background: radial-gradient(circle, #301934, #502b50);
+      }
+      100% {
+        background: radial-gradient(circle, #502b50, #301934);
+      }
+    }
+
+    /* Apply animated background */
+    body {
+      animation: bgAnimation 10s ease-in-out infinite;
+    }
+
     /* Golden Ticket Styles */
     .golden-ticket {
       font-size: 2em;
-      color: #000000; /* Changed from #FFD700 to black */
+      color: #000000;
       background: linear-gradient(to bottom, #f8e08c, #caa526);
       padding: 20px 40px;
       border: 4px solid #FFD700;
       border-radius: 15px;
       text-shadow: 2px 2px 5px #000000;
       margin-top: 20px;
-      animation: fadeIn 2s ease-in-out;
       max-width: 500px;
+      opacity: 0; /* Start hidden */
+      transform: scale(0.5); /* Start scaled down */
+      animation: none; /* We'll control when the animation starts */
     }
 
     /* Path Selection Styles */
@@ -57,7 +90,6 @@
       max-width: 600px;
       width: 100%;
     }
-
     .labyrinth div {
       background-color: #412c58;
       border: 2px solid #FFD700;
@@ -67,7 +99,6 @@
       text-shadow: 1px 1px 3px #000000;
       transition: background-color 0.3s, transform 0.2s;
     }
-
     .labyrinth div:hover {
       background-color: #5d3f76;
       transform: scale(1.1);
@@ -76,31 +107,6 @@
     /* Hidden Class */
     .hidden {
       display: none;
-    }
-
-    /* Leaderboard Styles */
-    .leaderboard {
-      margin-top: 20px;
-      border: 2px solid #FFD700;
-      border-radius: 8px;
-      padding: 10px;
-      background-color: #412c58;
-      color: #FFD700;
-      max-width: 400px;
-      width: 100%;
-      text-align: left;
-      animation: leaderboardEntrance 2s ease-in-out;
-    }
-
-    @keyframes leaderboardEntrance {
-      from {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
     }
 
     /* Score Animation */
@@ -132,32 +138,18 @@
       animation: fadeIn 2s ease-in-out;
     }
 
-    /* Math Game Styles */
-    .math-game {
+    /* Quiz Styles */
+    .quiz-game {
       margin-top: 20px;
     }
-
-    .math-game h2 {
+    .quiz-game h2 {
       font-size: 2em;
       margin-bottom: 15px;
     }
-
-    .math-game p {
+    .quiz-game p {
       font-size: 1.2em;
     }
-
-    .math-table {
-      border: 2px solid #FFD700;
-      border-radius: 8px;
-      padding: 10px;
-      background-color: #412c58;
-      color: #FFD700;
-      max-width: 300px;
-      width: 100%;
-      margin: 10px auto;
-    }
-
-    .styled-input {
+    .quiz-option {
       background-color: #412c58;
       color: #FFD700;
       border: 2px solid #FFD700;
@@ -167,11 +159,16 @@
       width: 80%;
       text-align: center;
       margin-bottom: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    .quiz-option:hover {
+      background-color: #5d3f76;
+      transform: scale(1.1);
     }
 
-    .styled-input::placeholder {
-      color: #FFD700;
-      opacity: 0.8;
+    .quiz-option.correct {
+      background-color: #00FF00;
     }
 
     /* Footer Styles */
@@ -182,12 +179,10 @@
       color: #FFD700;
       opacity: 0.8;
     }
-
     footer a {
       color: #FFD700;
       text-decoration: underline;
     }
-
     footer a:hover {
       color: #ffcc33;
     }
@@ -203,6 +198,23 @@
         transform: scale(1);
       }
     }
+
+    /* Golden Ticket Reveal Animation */
+    @keyframes revealTicket {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-10deg);
+      }
+      50% {
+        opacity: 0.5;
+        transform: scale(0.7) rotate(10deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -211,7 +223,7 @@
 
   <!-- Introductory Text -->
   <p id="intro-text">
-    Only the fastest and smartest can claim the <strong>Golden Ticket</strong>. Solve puzzles and compete for the highest score!
+    Compete for the <strong>Golden Ticket</strong>! Race against others to solve the crypto challenges and score the highest. Only the fastest will win the Golden Ticket!
   </p>
 
   <!-- Path Selection -->
@@ -221,18 +233,14 @@
     <div onclick="choosePath(3)">Path 3</div>
   </div>
 
-  <!-- Math Mini-Game -->
-  <div id="math-game" class="math-game hidden">
-    <h2>Math Challenge</h2>
-    <p id="question">What is 5 + 3?</p>
-    <input type="text" id="math-answer" class="styled-input" placeholder="Your answer here"/>
-    <button onclick="checkMathAnswer()">Submit</button>
-
-    <div class="math-table">
-      <p>Score: <span id="score">0</span></p>
-      <p>Attempts Left: <span id="attempts">3</span></p>
-      <p id="score-animation" class="score-animation hidden">+10</p>
-    </div>
+  <!-- Quiz Mini-Game -->
+  <div id="quiz-game" class="quiz-game hidden">
+    <h2>Crypto Challenge</h2>
+    <p id="question">What is Bitcoin?</p>
+    <div class="quiz-option" onclick="checkAnswer('BTC')">A) A car</div>
+    <div class="quiz-option" onclick="checkAnswer('BTC')">B) A cryptocurrency</div>
+    <div class="quiz-option" onclick="checkAnswer('ETH')">C) A country</div>
+    <div class="quiz-option" onclick="checkAnswer('SOL')">D) A social network</div>
   </div>
 
   <!-- Golden Ticket Display -->
@@ -256,15 +264,15 @@
     </p>
   </footer>
 
-  <!-- JavaScript -->
+  <!-- JavaScript at Bottom to Ensure Functions are Defined Before Use -->
   <script>
     // Initialize game variables
     let score = 0;
     let attempts = 3;
     const questions = [
-      { question: "What is 5 + 3?", answer: 8 },
-      { question: "What is 10 - 6?", answer: 4 },
-      { question: "What is 7 × 3?", answer: 21 }
+      { question: "What is Bitcoin?", correctAnswer: "BTC" },
+      { question: "What is Ethereum?", correctAnswer: "ETH" },
+      { question: "What is Solana?", correctAnswer: "SOL" }
     ];
     let currentQuestion = 0;
 
@@ -277,15 +285,15 @@
       // Hide path selection and intro text
       document.getElementById('path-selection').classList.add('hidden');
       document.getElementById('intro-text').classList.add('hidden');
-      // Start the math mini-game
-      startMathGame();
+      // Start the quiz game
+      startQuizGame();
     }
 
     /**
-     * Function to start the math mini-game
+     * Function to start the quiz game
      */
-    function startMathGame() {
-      document.getElementById('math-game').classList.remove('hidden');
+    function startQuizGame() {
+      document.getElementById('quiz-game').classList.remove('hidden');
       loadQuestion();
     }
 
@@ -295,8 +303,6 @@
     function loadQuestion() {
       if (currentQuestion < questions.length) {
         document.getElementById('question').textContent = questions[currentQuestion].question;
-        document.getElementById('math-answer').value = '';
-        document.getElementById('math-answer').focus();
       } else {
         endGame();
       }
@@ -305,62 +311,51 @@
     /**
      * Function to check the user's answer
      */
-    function checkMathAnswer() {
-      const answerInput = document.getElementById('math-answer').value.trim();
-      const answer = parseInt(answerInput, 10);
-      const correctAnswer = questions[currentQuestion].answer;
-      const scoreAnimation = document.getElementById('score-animation');
-
-      if (isNaN(answer)) {
-        alert("Please enter a valid number.");
-        return;
-      }
+    function checkAnswer(answer) {
+      const correctAnswer = questions[currentQuestion].correctAnswer;
+      const options = document.querySelectorAll('.quiz-option');
+      
+      // Remove existing correct answer class
+      options.forEach(option => option.classList.remove('correct'));
 
       if (answer === correctAnswer) {
         score += 10;
-        updateScore();
-        scoreAnimation.classList.remove('hidden');
-        setTimeout(() => scoreAnimation.classList.add('hidden'), 500);
+        document.getElementById('score').textContent = score;
+
+        // Highlight the correct answer
+        document.querySelector(`.quiz-option:nth-child(${[...options].findIndex(opt => opt.textContent.startsWith(answer)) + 1})`).classList.add('correct');
+        
+        // Move to the next question after a brief delay
+        setTimeout(() => {
+          currentQuestion++;
+          loadQuestion();
+        }, 1000);
       } else {
         attempts--;
-        updateScore();
         if (attempts === 0) {
-          alert("No attempts left! Game Over.");
           endGame();
-          return;
-        } else {
-          alert(`Incorrect! You have ${attempts} attempt(s) left.`);
         }
       }
-
-      currentQuestion++;
-      loadQuestion();
-    }
-
-    /**
-     * Function to update the score and attempts displayed
-     */
-    function updateScore() {
-      document.getElementById('score').textContent = score;
-      document.getElementById('attempts').textContent = attempts;
     }
 
     /**
      * Function to end the game and show the golden ticket
      */
     function endGame() {
-      document.getElementById('math-game').classList.add('hidden');
-      document.getElementById('golden-ticket').classList.remove('hidden');
-      document.getElementById('instructions').classList.remove('hidden');
+      document.getElementById('quiz-game').classList.add('hidden');
+      // Add a slight processing delay before showing the Golden Ticket
+      setTimeout(() => {
+        const goldenTicketEl = document.getElementById('golden-ticket');
+        goldenTicketEl.classList.remove('hidden');
+        // Trigger ticket reveal animation
+        goldenTicketEl.style.animation = 'revealTicket 1.5s forwards';
+        // After the ticket is displayed, show instructions
+        setTimeout(() => {
+          document.getElementById('instructions').classList.remove('hidden');
+        }, 2000);
+      }, 1500); // 1.5 second delay to simulate "processing"
     }
-
-    // Optional: Prevent form submission on Enter key within the input
-    document.getElementById('math-answer').addEventListener('keypress', function(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        checkMathAnswer();
-      }
-    });
   </script>
 </body>
 </html>
+
