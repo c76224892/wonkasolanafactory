@@ -5,83 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wonka Solana Factory</title>
   <style>
-    /* General Styles */
-    body {
-      font-family: 'Georgia', serif;
+    /* Base Reset */
+    * {
       margin: 0;
       padding: 0;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background-color: #301934;
-      color: #FFD700;
-      background-image: radial-gradient(circle, #502b50, #301934);
-      overflow-x: hidden;
+      box-sizing: border-box;
     }
 
+    /* Candy-like, colorful style */
+    body {
+      font-family: "Georgia", serif;
+      background-color: #ffd9f0; 
+      color: #fff; 
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow-x: hidden;
+      position: relative;
+      animation: candyBG 8s infinite alternate ease-in-out;
+    }
+
+    /* Swirling candy background animation */
+    @keyframes candyBG {
+      0% {
+        background: radial-gradient(circle at center, #ffd9f0 0%, #ff9ade 45%, #ff73db 100%);
+      }
+      50% {
+        background: radial-gradient(circle at center, #ff73db 0%, #ff9ade 45%, #ffd9f0 100%);
+      }
+      100% {
+        background: radial-gradient(circle at center, #ffd9f0 0%, #ff9ade 45%, #ff73db 100%);
+      }
+    }
+
+    /* Title style */
     h1 {
       font-size: 3em;
       margin-bottom: 20px;
-      text-shadow: 2px 2px 5px #000000;
-      animation: glowTitle 2s infinite alternate;
+      text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
+      animation: glowTitle 3s infinite alternate;
     }
 
+    /* Gentle glow for the title */
     @keyframes glowTitle {
       0% {
-        text-shadow: 2px 2px 5px #000;
         transform: scale(1);
+        text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
       }
       100% {
-        text-shadow: 2px 2px 15px #FFD700;
-        transform: scale(1.05);
+        transform: scale(1.06);
+        text-shadow: 2px 2px 15px rgba(255, 255, 255, 0.8);
       }
     }
 
     p {
       font-size: 1.2em;
       max-width: 600px;
-      line-height: 1.8;
       margin-bottom: 30px;
+      line-height: 1.5;
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(255,255,255,0.2);
     }
 
-    /* Background Animation */
-    @keyframes bgAnimation {
-      0% {
-        background: radial-gradient(circle, #502b50, #301934);
-      }
-      50% {
-        background: radial-gradient(circle, #301934, #502b50);
-      }
-      100% {
-        background: radial-gradient(circle, #502b50, #301934);
-      }
-    }
-
-    /* Apply animated background */
-    body {
-      animation: bgAnimation 10s ease-in-out infinite;
-    }
-
-    /* Golden Ticket Styles */
-    .golden-ticket {
-      font-size: 2em;
-      color: #000000;
-      background: linear-gradient(to bottom, #f8e08c, #caa526);
-      padding: 20px 40px;
-      border: 4px solid #FFD700;
-      border-radius: 15px;
-      text-shadow: 2px 2px 5px #000000;
-      margin-top: 20px;
-      max-width: 500px;
-      opacity: 0; /* Start hidden */
-      transform: scale(0.5); /* Start scaled down */
-      animation: none; /* We'll control when the animation starts */
-    }
-
-    /* Path Selection Styles */
+    /* Path Selection */
     .labyrinth {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -91,123 +80,114 @@
       width: 100%;
     }
     .labyrinth div {
-      background-color: #412c58;
-      border: 2px solid #FFD700;
+      background-color: #f587c0;
+      border: 3px dashed #fff;
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
-      text-shadow: 1px 1px 3px #000000;
       transition: background-color 0.3s, transform 0.2s;
+      font-weight: bold;
     }
     .labyrinth div:hover {
-      background-color: #5d3f76;
-      transform: scale(1.1);
+      background-color: #fa74c4;
+      transform: scale(1.05);
     }
 
-    /* Hidden Class */
+    /* Hide/Show toggling */
     .hidden {
       display: none;
     }
 
-    /* Score Animation */
-    .score-animation {
-      font-size: 1.5em;
-      color: #00FF00;
-      animation: bounce 0.5s ease-in-out;
-    }
-
-    @keyframes bounce {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    /* Instructions Styles */
-    .instructions {
-      margin-top: 20px;
-      padding: 20px;
-      background-color: #301934;
-      border: 2px solid #FFD700;
-      border-radius: 8px;
-      color: #FFD700;
-      text-align: center;
-      max-width: 400px;
-      animation: fadeIn 2s ease-in-out;
-    }
-
-    /* Quiz Styles */
+    /* Quiz Container */
     .quiz-game {
       margin-top: 20px;
     }
     .quiz-game h2 {
       font-size: 2em;
       margin-bottom: 15px;
-    }
-    .quiz-game p {
-      font-size: 1.2em;
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.5);
     }
     .quiz-option {
-      background-color: #412c58;
-      color: #FFD700;
-      border: 2px solid #FFD700;
-      padding: 10px;
+      background-color: #ff9ade;
+      color: #fff;
+      border: 2px dashed #fff;
+      padding: 12px;
       font-size: 1.2em;
       border-radius: 8px;
       width: 80%;
-      text-align: center;
-      margin-bottom: 15px;
+      margin: 8px auto;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s;
+      text-align: center;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
     }
     .quiz-option:hover {
-      background-color: #5d3f76;
-      transform: scale(1.1);
+      background-color: #ff73db;
+      transform: scale(1.05);
     }
 
     .quiz-option.correct {
-      background-color: #00FF00;
+      background-color: #96fda1;
+      color: #250f25;
+      border: 2px solid #fff;
+      text-shadow: 1px 1px 3px rgba(255,255,255,0.3);
     }
 
-    /* Footer Styles */
-    footer {
-      position: absolute;
-      bottom: 10px;
-      font-size: 0.8em;
-      color: #FFD700;
-      opacity: 0.8;
-    }
-    footer a {
-      color: #FFD700;
-      text-decoration: underline;
-    }
-    footer a:hover {
-      color: #ffcc33;
+    /* Score Display */
+    #score {
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     }
 
-    /* Fade In Animation */
-    @keyframes fadeIn {
+    /* Thinking Mode Overlay */
+    #thinking-mode {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 2em;
+      color: #fff;
+      animation: fadeThinking 0.5s forwards;
+    }
+    @keyframes fadeThinking {
       from {
         opacity: 0;
-        transform: scale(0.8);
       }
       to {
         opacity: 1;
-        transform: scale(1);
       }
     }
 
-    /* Golden Ticket Reveal Animation */
+    /* Golden Ticket */
+    .golden-ticket {
+      font-size: 2em;
+      color: #371e0e;
+      background: linear-gradient(to bottom, #ffeea8, #ffdd66);
+      padding: 20px 40px;
+      border: 3px solid #fff;
+      border-radius: 15px;
+      margin-top: 20px;
+      max-width: 500px;
+      opacity: 0;
+      transform: scale(0.5);
+      animation: none;
+      text-shadow: 1px 1px 3px rgba(255,255,255,0.4);
+    }
     @keyframes revealTicket {
       0% {
         opacity: 0;
-        transform: scale(0.5) rotate(-10deg);
+        transform: scale(0.5) rotate(-5deg);
       }
       50% {
         opacity: 0.5;
-        transform: scale(0.7) rotate(10deg);
+        transform: scale(0.8) rotate(5deg);
       }
       100% {
         opacity: 1;
@@ -215,6 +195,44 @@
       }
     }
 
+    /* Instructions */
+    .instructions {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #ffebfc;
+      color: #5e4956;
+      border: 2px dashed #fff;
+      border-radius: 8px;
+      max-width: 400px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Footer */
+    footer {
+      font-size: 0.8em;
+      color: #fff;
+      opacity: 0.9;
+      position: absolute;
+      bottom: 10px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    footer a {
+      color: #fff;
+      text-decoration: underline;
+    }
+    footer a:hover {
+      color: #ffd9f0;
+    }
   </style>
 </head>
 <body>
@@ -223,7 +241,7 @@
 
   <!-- Introductory Text -->
   <p id="intro-text">
-    Compete for the <strong>Golden Ticket</strong>! Race against others to solve the crypto challenges and score the highest. Only the fastest will win the Golden Ticket!
+    Step into a colorful world of fun and crypto puzzles! Race for the <strong>Golden Ticket</strong> and prove you’re the most clever contender in Wonka’s magical Solana Factory.
   </p>
 
   <!-- Path Selection -->
@@ -237,127 +255,168 @@
   <div id="quiz-game" class="quiz-game hidden">
     <h2>Crypto Challenge</h2>
     <p id="question">What is Bitcoin?</p>
-    <div class="quiz-option" onclick="checkAnswer('BTC')">A) A car</div>
-    <div class="quiz-option" onclick="checkAnswer('BTC')">B) A cryptocurrency</div>
-    <div class="quiz-option" onclick="checkAnswer('ETH')">C) A country</div>
-    <div class="quiz-option" onclick="checkAnswer('SOL')">D) A social network</div>
+
+    <div class="quiz-option" onclick="checkAnswer('A')">A) A car</div>
+    <div class="quiz-option" onclick="checkAnswer('B')">B) A cryptocurrency</div>
+    <div class="quiz-option" onclick="checkAnswer('C')">C) A country</div>
+    <div class="quiz-option" onclick="checkAnswer('D')">D) A social network</div>
+
+    <p style="margin-top: 20px;">
+      Score: <span id="score">0</span>
+    </p>
+  </div>
+
+  <!-- Thinking Mode -->
+  <div id="thinking-mode">
+    <div>Thinking...</div>
   </div>
 
   <!-- Golden Ticket Display -->
   <div id="golden-ticket" class="golden-ticket hidden">
-    🎫 <strong>Solana Golden Ticket</strong> 🎫<br>
-    <span id="ticket-amount">1 SOL</span>
+    🎟 Wonka's Golden Ticket - 1 SOL
   </div>
 
   <!-- Instructions Display -->
   <div id="instructions" class="instructions hidden">
-    🎉 Congratulations! You have won <strong>1 SOL</strong>!<br>
-    Tag us on <a href="https://x.com/WillyWonkafun" target="_blank">@WillyWonkafun</a> with your wallet address to claim your prize.<br>
-    Visit us on <a href="https://x.com/WillyWonkafun" target="_blank">https://x.com/WillyWonkafun</a>.
+    Congratulations! You have won 1 SOL!
+    <br>
+    Tag us on <a href="https://x.com/wonkasolfactory" target="_blank" style="color:#9b59b6; text-decoration: underline;">@wonkasolfactory</a> with your wallet address to claim your prize.
+    <br>
+    Visit us on <a href="https://x.com/wonkasolfactory" target="_blank" style="color:#9b59b6; text-decoration: underline;">https://x.com/wonkasolfactory</a>
+    <br>
+    or explore more at <strong>http://www.wonkasolanafactory.fun</strong>.
   </div>
 
   <!-- Footer -->
   <footer>
     <p id="footer-text">
-      "Don’t forget what happened to the man who suddenly got everything he ever wanted..."<br>
-      <a href="https://en.wikipedia.org/wiki/Willy_Wonka_%26_the_Chocolate_Factory" target="_blank">Learn More</a>
+      "One secret of success: keep your wonder and your wits."
+      <br><a href="https://en.wikipedia.org/wiki/Willy_Wonka_%26_the_Chocolate_Factory" target="_blank">Learn More</a>
     </p>
   </footer>
 
-  <!-- JavaScript at Bottom to Ensure Functions are Defined Before Use -->
+  <!-- JavaScript -->
   <script>
-    // Initialize game variables
     let score = 0;
     let attempts = 3;
-    const questions = [
-      { question: "What is Bitcoin?", correctAnswer: "BTC" },
-      { question: "What is Ethereum?", correctAnswer: "ETH" },
-      { question: "What is Solana?", correctAnswer: "SOL" }
-    ];
-    let currentQuestion = 0;
+    let currentQuestionIndex = 0;
 
-    /**
-     * Function to handle path selection
-     * @param {number} path - The path number selected by the user
-     */
+    /* Up to 3 questions total */
+    const quizData = [
+      {
+        question: "What is Bitcoin?",
+        correctOption: "B", /* B => "A cryptocurrency" */
+        options: [
+          "A) A car",
+          "B) A cryptocurrency",
+          "C) A country",
+          "D) A social network"
+        ]
+      },
+      {
+        question: "Which one is Ethereum?",
+        correctOption: "C", 
+        options: [
+          "A) A browser",
+          "B) A coffee brand",
+          "C) A blockchain token",
+          "D) A planet"
+        ]
+      },
+      {
+        question: "What is Solana known for?",
+        correctOption: "B", 
+        options: [
+          "A) A chat application",
+          "B) A fast blockchain",
+          "C) A gaming console",
+          "D) A cooking method"
+        ]
+      }
+    ];
+
     function choosePath(path) {
-      console.log(`Path ${path} selected.`);
-      // Hide path selection and intro text
       document.getElementById('path-selection').classList.add('hidden');
       document.getElementById('intro-text').classList.add('hidden');
-      // Start the quiz game
       startQuizGame();
     }
 
-    /**
-     * Function to start the quiz game
-     */
     function startQuizGame() {
       document.getElementById('quiz-game').classList.remove('hidden');
       loadQuestion();
     }
 
-    /**
-     * Function to load the current question
-     */
     function loadQuestion() {
-      if (currentQuestion < questions.length) {
-        document.getElementById('question').textContent = questions[currentQuestion].question;
-      } else {
+      // If we've already reached the max 3 questions or beyond, end the game
+      if (currentQuestionIndex >= quizData.length) {
         endGame();
+        return;
       }
+
+      const data = quizData[currentQuestionIndex];
+      document.getElementById('question').textContent = data.question;
+
+      const quizOptions = document.querySelectorAll('.quiz-option');
+      data.options.forEach((optText, idx) => {
+        quizOptions[idx].textContent = optText;
+        quizOptions[idx].classList.remove('correct');
+      });
     }
 
-    /**
-     * Function to check the user's answer
-     */
-    function checkAnswer(answer) {
-      const correctAnswer = questions[currentQuestion].correctAnswer;
-      const options = document.querySelectorAll('.quiz-option');
-      
-      // Remove existing correct answer class
-      options.forEach(option => option.classList.remove('correct'));
-
-      if (answer === correctAnswer) {
+    function checkAnswer(userChoice) {
+      const data = quizData[currentQuestionIndex];
+      if (userChoice === data.correctOption) {
+        // Right answer => Increase score
         score += 10;
         document.getElementById('score').textContent = score;
 
-        // Highlight the correct answer
-        document.querySelector(`.quiz-option:nth-child(${[...options].findIndex(opt => opt.textContent.startsWith(answer)) + 1})`).classList.add('correct');
-        
-        // Move to the next question after a brief delay
-        setTimeout(() => {
-          currentQuestion++;
-          loadQuestion();
-        }, 1000);
+        // Show thinking mode, then Golden Ticket
+        showThinkingMode(() => {
+          endGame();
+        });
       } else {
         attempts--;
         if (attempts === 0) {
           endGame();
+        } else {
+          currentQuestionIndex++;
+          loadQuestion();
         }
       }
     }
 
     /**
-     * Function to end the game and show the golden ticket
+     * showThinkingMode(callback) 
+     * Displays the overlay for ~1.5 seconds, then calls callback()
      */
+    function showThinkingMode(callback) {
+      const thinking = document.getElementById('thinking-mode');
+      thinking.style.display = "flex";
+      thinking.style.alignItems = "center";
+      thinking.style.justifyContent = "center";
+      setTimeout(() => {
+        thinking.style.display = "none";
+        callback();
+      }, 1500);
+    }
+
     function endGame() {
       document.getElementById('quiz-game').classList.add('hidden');
-      // Add a slight processing delay before showing the Golden Ticket
+      // Show Golden Ticket after a short delay
       setTimeout(() => {
         const goldenTicketEl = document.getElementById('golden-ticket');
         goldenTicketEl.classList.remove('hidden');
-        // Trigger ticket reveal animation
         goldenTicketEl.style.animation = 'revealTicket 1.5s forwards';
-        // After the ticket is displayed, show instructions
+
         setTimeout(() => {
           document.getElementById('instructions').classList.remove('hidden');
         }, 2000);
-      }, 1500); // 1.5 second delay to simulate "processing"
+      }, 800);
     }
   </script>
 </body>
 </html>
+
 
 
 
