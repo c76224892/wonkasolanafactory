@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Willy Wonka's Golden Labyrinth</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #301934;
+      color: #FFD700;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-image: radial-gradient(circle, #502b50, #301934);
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px #000000;
+    }
+
+    p {
+      font-size: 1.2em;
+      max-width: 600px;
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    /* Golden Ticket Styles */
+    .golden-ticket {
+      font-size: 2em;
+      color: #000000; /* Changed from #FFD700 to black */
+      background: linear-gradient(to bottom, #f8e08c, #caa526);
+      padding: 20px 40px;
+      border: 4px solid #FFD700;
+      border-radius: 15px;
+      text-shadow: 2px 2px 5px #000000;
+      margin-top: 20px;
+      animation: fadeIn 2s ease-in-out;
+      max-width: 500px;
+    }
+
+    /* Path Selection Styles */
+    .labyrinth {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 30px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .labyrinth div {
+      background-color: #412c58;
+      border: 2px solid #FFD700;
+      padding: 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-shadow: 1px 1px 3px #000000;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .labyrinth div:hover {
+      background-color: #5d3f76;
+      transform: scale(1.1);
+    }
+
+    /* Hidden Class */
+    .hidden {
+      display: none;
+    }
+
+    /* Leaderboard Styles */
+    .leaderboard {
+      margin-top: 20px;
+      border: 2px solid #FFD700;
+      border-radius: 8px;
+      padding: 10px;
+      background-color: #412c58;
+      color: #FFD700;
+      max-width: 400px;
+      width: 100%;
+      text-align: left;
+      animation: leaderboardEntrance 2s ease-in-out;
+    }
+
+    @keyframes leaderboardEntrance {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Score Animation */
+    .score-animation {
+      font-size: 1.5em;
+      color: #00FF00;
+      animation: bounce 0.5s ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Instructions Styles */
+    .instructions {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #301934;
+      border: 2px solid #FFD700;
+      border-radius: 8px;
+      color: #FFD700;
+      text-align: center;
+      max-width: 400px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    /* Math Game Styles */
+    .math-game {
+      margin-top: 20px;
+    }
+
+    .math-game h2 {
+      font-size: 2em;
+      margin-bottom: 15px;
+    }
+
+    .math-game p {
+      font-size: 1.2em;
+    }
+
+    .math-table {
+      border: 2px solid #FFD700;
+      border-radius: 8px;
+      padding: 10px;
+      background-color: #412c58;
+      color: #FFD700;
+      max-width: 300px;
+      width: 100%;
+      margin: 10px auto;
+    }
+
+    .styled-input {
+      background-color: #412c58;
+      color: #FFD700;
+      border: 2px solid #FFD700;
+      padding: 10px;
+      font-size: 1.2em;
+      border-radius: 8px;
+      width: 80%;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .styled-input::placeholder {
+      color: #FFD700;
+      opacity: 0.8;
+    }
+
+    /* Footer Styles */
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.8em;
+      color: #FFD700;
+      opacity: 0.8;
+    }
+
+    footer a {
+      color: #FFD700;
+      text-decoration: underline;
+    }
+
+    footer a:hover {
+      color: #ffcc33;
+    }
+
+    /* Fade In Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Title -->
+  <h1>Willy Wonka's Golden Labyrinth</h1>
+
+  <!-- Introductory Text -->
+  <p id="intro-text">
+    Only the fastest and smartest can claim the <strong>Golden Ticket</strong>. Solve puzzles and compete for the highest score!
+  </p>
+
+  <!-- Path Selection -->
+  <div id="path-selection" class="labyrinth">
+    <div onclick="choosePath(1)">Path 1</div>
+    <div onclick="choosePath(2)">Path 2</div>
+    <div onclick="choosePath(3)">Path 3</div>
+  </div>
+
+  <!-- Math Mini-Game -->
+  <div id="math-game" class="math-game hidden">
+    <h2>Math Challenge</h2>
+    <p id="question">What is 5 + 3?</p>
+    <input type="text" id="math-answer" class="styled-input" placeholder="Your answer here"/>
+    <button onclick="checkMathAnswer()">Submit</button>
+
+    <div class="math-table">
+      <p>Score: <span id="score">0</span></p>
+      <p>Attempts Left: <span id="attempts">3</span></p>
+      <p id="score-animation" class="score-animation hidden">+10</p>
+    </div>
+  </div>
+
+  <!-- Golden Ticket Display -->
+  <div id="golden-ticket" class="golden-ticket hidden">
+    🎫 <strong>Solana Golden Ticket</strong> 🎫<br>
+    <span id="ticket-amount">1 SOL</span>
+  </div>
+
+  <!-- Instructions Display -->
+  <div id="instructions" class="instructions hidden">
+    🎉 Congratulations! You have won <strong>1 SOL</strong>!<br>
+    Tag us on <a href="https://x.com/WillyWonkafun" target="_blank">@WillyWonkafun</a> with your wallet address to claim your prize.<br>
+    Visit us on <a href="https://x.com/WillyWonkafun" target="_blank">https://x.com/WillyWonkafun</a>.
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p id="footer-text">
+      "Don’t forget what happened to the man who suddenly got everything he ever wanted..."<br>
+      <a href="https://en.wikipedia.org/wiki/Willy_Wonka_%26_the_Chocolate_Factory" target="_blank">Learn More</a>
+    </p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Initialize game variables
+    let score = 0;
+    let attempts = 3;
+    const questions = [
+      { question: "What is 5 + 3?", answer: 8 },
+      { question: "What is 10 - 6?", answer: 4 },
+      { question: "What is 7 × 3?", answer: 21 }
+    ];
+    let currentQuestion = 0;
+
+    /**
+     * Function to handle path selection
+     * @param {number} path - The path number selected by the user
+     */
+    function choosePath(path) {
+      console.log(`Path ${path} selected.`);
+      // Hide path selection and intro text
+      document.getElementById('path-selection').classList.add('hidden');
+      document.getElementById('intro-text').classList.add('hidden');
+      // Start the math mini-game
+      startMathGame();
+    }
+
+    /**
+     * Function to start the math mini-game
+     */
+    function startMathGame() {
+      document.getElementById('math-game').classList.remove('hidden');
+      loadQuestion();
+    }
+
+    /**
+     * Function to load the current question
+     */
+    function loadQuestion() {
+      if (currentQuestion < questions.length) {
+        document.getElementById('question').textContent = questions[currentQuestion].question;
+        document.getElementById('math-answer').value = '';
+        document.getElementById('math-answer').focus();
+      } else {
+        endGame();
+      }
+    }
+
+    /**
+     * Function to check the user's answer
+     */
+    function checkMathAnswer() {
+      const answerInput = document.getElementById('math-answer').value.trim();
+      const answer = parseInt(answerInput, 10);
+      const correctAnswer = questions[currentQuestion].answer;
+      const scoreAnimation = document.getElementById('score-animation');
+
+      if (isNaN(answer)) {
+        alert("Please enter a valid number.");
+        return;
+      }
+
+      if (answer === correctAnswer) {
+        score += 10;
+        updateScore();
+        scoreAnimation.classList.remove('hidden');
+        setTimeout(() => scoreAnimation.classList.add('hidden'), 500);
+      } else {
+        attempts--;
+        updateScore();
+        if (attempts === 0) {
+          alert("No attempts left! Game Over.");
+          endGame();
+          return;
+        } else {
+          alert(`Incorrect! You have ${attempts} attempt(s) left.`);
+        }
+      }
+
+      currentQuestion++;
+      loadQuestion();
+    }
+
+    /**
+     * Function to update the score and attempts displayed
+     */
+    function updateScore() {
+      document.getElementById('score').textContent = score;
+      document.getElementById('attempts').textContent = attempts;
+    }
+
+    /**
+     * Function to end the game and show the golden ticket
+     */
+    function endGame() {
+      document.getElementById('math-game').classList.add('hidden');
+      document.getElementById('golden-ticket').classList.remove('hidden');
+      document.getElementById('instructions').classList.remove('hidden');
+    }
+
+    // Optional: Prevent form submission on Enter key within the input
+    document.getElementById('math-answer').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        checkMathAnswer();
+      }
+    });
+  </script>
+</body>
+</html>
